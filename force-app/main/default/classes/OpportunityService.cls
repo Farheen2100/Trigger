@@ -56,10 +56,11 @@ public with sharing class OpportunityService {
         if(!taskToInsert.isEmpty())
             insert taskToInsert ;
     }
+    
 
-    public static void updateAccountAnnualRevenue(Set<Id> AccountIds) {
+    public static void updateAccountAnnualRevenue(Set<Id> accountIds) {
         List<Account> accounts = [SELECT id,AnnualRevenue,(SELECT accountId,Amount FROM Opportunities) 
-        FROM account WHERE id =: AccountIds];
+        FROM account WHERE id =: accountIds];
 
         for(Account account :accounts){
             Decimal total = 0;

@@ -62,7 +62,7 @@ public with sharing class AccountService {
     }
 
     //scenerio - 31
-    public static void SharingAccountRecordToStandardUser(List<Account> accounts) {
+    public static void sharingAccountRecordToStandardUser(List<Account> accounts) {
         List<AccountShare> accountSharesToCreate = new List<AccountShare>();
         Id standardUserProfileId = [SELECT Id FROM Profile WHERE Name = 'Standard User'].Id;
         Group publicGroup = [SELECT Id FROM Group WHERE DeveloperName = 'Admins'];
@@ -82,8 +82,10 @@ public with sharing class AccountService {
     }
     }
 
-    public static void updateContactPhoneOnAccountPhone(Set<Id> AccountIds, Map <Id,String> accountMapForPhone, List <contact> contacts) {
-        for(Contact con:[SELECT Id,accountId,HomePhone FROM Contact where accountId =: accountIds]) {
+    public static void updateContactPhoneOnAccountPhone(Set<Id> AccountIds, Map <Id,String> accountMapForPhone) {
+        List <contact> contacts = new List <Contact>();
+        List<Contact> contactList = [SELECT Id,accountId,HomePhone FROM Contact where accountId =: accountIds];
+        for(Contact con: contactList) {
             if(accountMapForPhone != null && accountMapForPhone.containsKey(con.accountId)) {
                 System.debug('3');
                 con.HomePhone = accountMapForPhone.get(con.accountId);
@@ -123,7 +125,10 @@ public with sharing class AccountService {
             contact.MailingState = accountMapForAddress.get(contact.AccountId).BillingState;
             contact.MailingStreet = accountMapForAddress.get(contact.AccountId).BillingStreet;
         }
-        update contacts;
+        if(!contacts.isEmpty()) {
+            update contacts;
+        }
+        
         System.debug('contact'+contacts);
     }
 
@@ -162,7 +167,6 @@ public with sharing class AccountService {
         if(accountIds != NULL) {
             for(Opportunity opportunity : opportunities) {
                 opportunity.OwnerId = opportunity.Account.OwnerId;
-               
             }
         }
         if(!opportunities.isEmpty()) {

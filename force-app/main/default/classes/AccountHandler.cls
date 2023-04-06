@@ -22,7 +22,7 @@ public with sharing class AccountHandler {
         AccountService.createContactOnAccount(accounts);
         AccountService.createContactOrOpportunityOnAccount(accounts);
         AccountService.createRelatedOpportunityOnAccount(accounts);
-        AccountService.SharingAccountRecordToStandardUser(accounts);
+        AccountService.sharingAccountRecordToStandardUser(accounts);
         
     }
 
@@ -88,7 +88,6 @@ public with sharing class AccountHandler {
     public static void updateContactPhoneOnAccountPhone(List<Account> accounts, Map<Id,Account> accountMap) {
         Set <Id> accountIds = new Set <Id>();
         Map <Id,String> accountMapForPhone = new Map <Id,string> ();
-        List <contact> contacts = new List <Contact>();
         for(Account acc : accounts) {
             if(accountMap.get(acc.Id).phone != acc.phone) {
                 accountIds.add(acc.id);
@@ -99,7 +98,7 @@ public with sharing class AccountHandler {
                 System.debug('2');
             }
         }
-        AccountService.updateContactPhoneOnAccountPhone(accountIds, accountMapForPhone,contacts  );
+        AccountService.updateContactPhoneOnAccountPhone(accountIds, accountMapForPhone  );
     }
 
     //scenerio - 4

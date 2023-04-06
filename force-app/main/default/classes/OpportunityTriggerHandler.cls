@@ -10,7 +10,7 @@ public with sharing class OpportunityTriggerHandler {
     }
     
     public static void beforeDelete(List<Opportunity> opportunities) {
-        OpportunityDeleteBySystemAdminstrator(opportunities);
+        opportunityDeleteBySystemAdminstrator(opportunities);
     }
 
     public static void afterInsert(List<Opportunity> opportunities ) {
@@ -51,10 +51,6 @@ public with sharing class OpportunityTriggerHandler {
         }
     }
 
-    
-
-    
-
     //scenerio - 12
     public static void updateStageToClosedLost(List<Opportunity> opportunities, Map<Id,Opportunity> opportunityMap ) {
         for(Opportunity opportunity : opportunities) {
@@ -65,7 +61,7 @@ public with sharing class OpportunityTriggerHandler {
     }
 
     //scenerio - 14
-    private static void OpportunityDeleteBySystemAdminstrator(List<Opportunity> opportunities) {
+    private static void opportunityDeleteBySystemAdminstrator(List<Opportunity> opportunities) {
         Id profileId = UserInfo.getProfileId();
         Profile profileName = [SELECT Name,Id FROM Profile WHERE Id =: profileid LIMIT 1];
         for(Opportunity opportunity : opportunities) {
@@ -86,15 +82,16 @@ public with sharing class OpportunityTriggerHandler {
             }
         }
     }
+    
     //scenerio - 23
     public static void updateAccountAnnualRevenue(List<Opportunity> Opportunities){
-        Set<Id> AccountIds = new Set<Id>();
+        Set<Id> accountIds = new Set<Id>();
         for(Opportunity opportunity :Opportunities){
             if(opportunity.AccountId != NULL){
-                AccountIds.add(opportunity.AccountId);
+                accountIds.add(opportunity.AccountId);
             }
         }
-        OpportunityService.updateAccountAnnualRevenue(AccountIds);
+        OpportunityService.updateAccountAnnualRevenue(accountIds);
         
     }
 
